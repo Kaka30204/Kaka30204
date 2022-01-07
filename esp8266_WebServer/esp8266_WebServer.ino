@@ -10,11 +10,11 @@ WiFiServer server(80);
 // ประกาศตัวแปรสำหรับเก็บหน้า HTTP
 String header;
 
-// กำหนดสถานะ LED ที่แสดงบนหน้าเว็บ
+// กำหนดสถานะ ที่แสดงบนหน้าเว็บ
 String output0State = "Unlocked";
 String output2State = "Unlocked";
 
-// กำหนด Pin สำหรับ LED
+// กำหนด Pin 
 const int output2 = 2;
 const int output3 = 3;
 
@@ -22,7 +22,7 @@ void setup() {
 
 Serial.begin(115200);
 
-// กำหนด Pin และตั้งค่าสถานะ LOW (ไฟดับ)
+// กำหนด Pin และตั้งค่าสถานะ 
 pinMode(output2, OUTPUT);
 pinMode(output3, OUTPUT);
 
@@ -76,7 +76,7 @@ client.println("Content-type:text/html");
 client.println("Connection: close");
 client.println();
 
-// ชุดคำสั่งในการเปิด-ปิด LED
+// ชุดคำสั่ง
 if (header.indexOf("GET /2/locked") >= 0) {
 Serial.println("GPIO 0 locked");
 output0State = "locked";
@@ -113,7 +113,7 @@ digitalWrite(output3, LOW);
             // ส่วนหัวของหน้า
             client.println("<body><h1>Door lock IOT </h1>");
             
-            // แสดงสถานะและปุ่มของ GPIO 0  
+            // แสดงสถานะและปุ่ม
             client.println("<p>Door Status : " + output0State + "</p>");
                   
             if (output0State=="Unlocked") {
@@ -122,7 +122,7 @@ digitalWrite(output3, LOW);
               client.println("<p><a href=\"/2/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
             } 
                
-            // แสดงสถานะและปุ่มของ GPIO 2  
+            // แสดงสถานะและปุ่ม
             client.println("<p>Door Status : " + output2State + "</p>");
             
             if (output2State=="Unlocked") {
