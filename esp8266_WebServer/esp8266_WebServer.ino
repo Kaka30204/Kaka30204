@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 
 // เปลี่ยนตรงนี้เป็นของเครือข่ายตัวเอง
-const char* ssid = "xxxxxxxxx";
-const char* password = "xxxxxxxxx";
+const char* ssid = "Suruay";
+const char* password = "0871398136";
 
 // ตั้งค่าพอร์ตเป็นพอร์ต 80
 WiFiServer server(80);
@@ -11,23 +11,23 @@ WiFiServer server(80);
 String header;
 
 // กำหนดสถานะ LED ที่แสดงบนหน้าเว็บ
-String output0State = "off";
-String output2State = "off";
+String output0State = "Unlocked";
+String output2State = "Unlocked";
 
 // กำหนด Pin สำหรับ LED
-const int output0 = 0;
 const int output2 = 2;
+const int output3 = 3;
 
 void setup() {
 
 Serial.begin(115200);
 
 // กำหนด Pin และตั้งค่าสถานะ LOW (ไฟดับ)
-pinMode(output0, OUTPUT);
 pinMode(output2, OUTPUT);
+pinMode(output3, OUTPUT);
 
-digitalWrite(output0, LOW);
 digitalWrite(output2, LOW);
+digitalWrite(output3, LOW);
 
 // เชื่อมต่อกับเครือข่าย WIFI
 Serial.print("Connecting to ");
@@ -77,22 +77,26 @@ client.println("Connection: close");
 client.println();
 
 // ชุดคำสั่งในการเปิด-ปิด LED
-if (header.indexOf("GET /0/on") >= 0) {
-Serial.println("GPIO 0 on");
-output0State = "on";
-digitalWrite(output0, HIGH);
-} else if (header.indexOf("GET /0/off") >= 0) {
-Serial.println("GPIO 0 off");
-output0State = "off";
-digitalWrite(output0, LOW);
-} else if (header.indexOf("GET /2/on") >= 0) {
-Serial.println("GPIO 2 on");
-output2State = "on";
-digitalWrite(output2, HIGH);
-} else if (header.indexOf("GET /2/off") >= 0) {
-Serial.println("GPIO 2 off");
-output2State = "off";
+if (header.indexOf("GET /2/locked") >= 0) {
+Serial.println("GPIO 0 locked");
+output0State = "locked";
 digitalWrite(output2, LOW);
+digitalWrite(output3, HIGH);
+} else if (header.indexOf("GET /2/Unlocked") >= 0) {
+Serial.println("GPIO 0 Unlocked");
+output0State = "Unlocked";
+digitalWrite(output2, HIGH);
+digitalWrite(output3, LOW);
+} else if (header.indexOf("GET /3/locked") >= 0) {
+Serial.println("GPIO 2 locked");
+output2State = "locked";
+digitalWrite(output2, HIGH);
+digitalWrite(output3, LOW);
+} else if (header.indexOf("GET /3/Unlocked") >= 0) {
+Serial.println("GPIO 2 Unlocked");
+output2State = "Unlocked";
+digitalWrite(output2, HIGH);
+digitalWrite(output3, LOW);
 }
 
 // ส่วนโค้ดแสดงหน้าเว็บที่ส่งไปให้ Client แสดง
@@ -107,24 +111,24 @@ digitalWrite(output2, LOW);
             client.println(".button2 {background-color: #77878A;}</style></head>");
             
             // ส่วนหัวของหน้า
-            client.println("<body><h1>ESP8266 Web Server</h1>");
+            client.println("<body><h1>Door lock IOT </h1>");
             
             // แสดงสถานะและปุ่มของ GPIO 0  
-            client.println("<p>GPIO 0 - State " + output0State + "</p>");
+            client.println("<p>Door Status : " + output0State + "</p>");
                   
-            if (output0State=="off") {
-              client.println("<p><a href=\"/0/on\"><button class=\"button\">ON</button></a></p>");
+            if (output0State=="Unlocked") {
+              client.println("<p><a href=\"/2/locked\"><button class=\"button\">LOCKED</button></a></p>");
             } else {
-              client.println("<p><a href=\"/0/off\"><button class=\"button button2\">OFF</button></a></p>");
+              client.println("<p><a href=\"/2/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
             } 
                
             // แสดงสถานะและปุ่มของ GPIO 2  
-            client.println("<p>GPIO 2 - State " + output2State + "</p>");
+            client.println("<p>Door Status : " + output2State + "</p>");
             
-            if (output2State=="off") {
-              client.println("<p><a href=\"/2/on\"><button class=\"button\">ON</button></a></p>");
+            if (output2State=="Unlocked") {
+              client.println("<p><a href=\"/3/locked\"><button class=\"button\">LOCKED</button></a></p>");
             } else {
-              client.println("<p><a href=\"/2/off\"><button class=\"button button2\">OFF</button></a></p>");
+              client.println("<p><a href=\"/3/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
             }
             client.println("</body></html>");
 
