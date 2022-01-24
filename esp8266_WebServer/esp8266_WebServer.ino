@@ -10,24 +10,24 @@ WiFiServer server(80);
 // ประกาศตัวแปรสำหรับเก็บหน้า HTTP
 String header;
 
-// กำหนดสถานะ ที่แสดงบนหน้าเว็บ
-String output0State = "Unlocked";
+// กำหนดสถานะ LED ที่แสดงบนหน้าเว็บ
 String output2State = "Unlocked";
+String output3State = "Unlocked";
 
-// กำหนด Pin 
-const int output2 = 2;
-const int output3 = 3;
+// กำหนด Pin สำหรับ LED
+const int MotorPin2 = D2;
+const int MotorPin3 = D3;
 
 void setup() {
 
 Serial.begin(115200);
 
-// กำหนด Pin และตั้งค่าสถานะ 
-pinMode(output2, OUTPUT);
-pinMode(output3, OUTPUT);
+// กำหนด Pin และตั้งค่าสถานะ LOW (ไฟดับ)
+pinMode(MotorPin2, OUTPUT);
+pinMode(MotorPin3, OUTPUT);
 
-digitalWrite(output2, LOW);
-digitalWrite(output3, LOW);
+digitalWrite(MotorPin2, LOW);
+digitalWrite(MotorPin3, LOW);
 
 // เชื่อมต่อกับเครือข่าย WIFI
 Serial.print("Connecting to ");
@@ -76,27 +76,27 @@ client.println("Content-type:text/html");
 client.println("Connection: close");
 client.println();
 
-// ชุดคำสั่ง
-if (header.indexOf("GET /2/locked") >= 0) {
-Serial.println("GPIO 0 locked");
-output0State = "locked";
-digitalWrite(output2, LOW);
-digitalWrite(output3, HIGH);
-} else if (header.indexOf("GET /2/Unlocked") >= 0) {
-Serial.println("GPIO 0 Unlocked");
-output0State = "Unlocked";
-digitalWrite(output2, HIGH);
-digitalWrite(output3, LOW);
-} else if (header.indexOf("GET /3/locked") >= 0) {
+// ชุดคำสั่งในการเปิด-ปิด 
+if (header.indexOf("GET /D2/locked") >= 0) {
 Serial.println("GPIO 2 locked");
 output2State = "locked";
-digitalWrite(output2, HIGH);
-digitalWrite(output3, LOW);
-} else if (header.indexOf("GET /3/Unlocked") >= 0) {
+digitalWrite(MotorPin2, LOW);
+digitalWrite(MotorPin3, HIGH);
+} else if (header.indexOf("GET /D2/Unlocked") >= 0) {
 Serial.println("GPIO 2 Unlocked");
 output2State = "Unlocked";
-digitalWrite(output2, HIGH);
-digitalWrite(output3, LOW);
+digitalWrite(MotorPin2, HIGH);
+digitalWrite(MotorPin3, LOW);
+} else if (header.indexOf("GET /D3/locked") >= 0) {
+Serial.println("GPIO 3 locked");
+output3State = "locked";
+digitalWrite(MotorPin2, HIGH);
+digitalWrite(MotorPin3, LOW);
+} else if (header.indexOf("GET /D3/Unlocked") >= 0) {
+Serial.println("GPIO 3 Unlocked");
+output3State = "Unlocked";
+digitalWrite(MotorPin2, HIGH);
+digitalWrite(MotorPin3, LOW);
 }
 
 // ส่วนโค้ดแสดงหน้าเว็บที่ส่งไปให้ Client แสดง
@@ -113,22 +113,22 @@ digitalWrite(output3, LOW);
             // ส่วนหัวของหน้า
             client.println("<body><h1>Door lock IOT </h1>");
             
-            // แสดงสถานะและปุ่ม
-            client.println("<p>Door Status : " + output0State + "</p>");
+            // แสดงสถานะและปุ่มของ GPIO 2  
+            client.println("<p>Door Status : " + output2State + "</p>");
                   
-            if (output0State=="Unlocked") {
-              client.println("<p><a href=\"/2/locked\"><button class=\"button\">LOCKED</button></a></p>");
+            if (output2State=="Unlocked") {
+              client.println("<p><a href=\"/D2/locked\"><button class=\"button\">LOCKED</button></a></p>");
             } else {
-              client.println("<p><a href=\"/2/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
+              client.println("<p><a href=\"/D2/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
             } 
                
-            // แสดงสถานะและปุ่ม
-            client.println("<p>Door Status : " + output2State + "</p>");
+            // แสดงสถานะและปุ่มของ GPIO 3  
+            client.println("<p>Door Status : " + output3State + "</p>");
             
-            if (output2State=="Unlocked") {
-              client.println("<p><a href=\"/3/locked\"><button class=\"button\">LOCKED</button></a></p>");
+            if (output3State=="Unlocked") {
+              client.println("<p><a href=\"/D3/locked\"><button class=\"button\">LOCKED</button></a></p>");
             } else {
-              client.println("<p><a href=\"/3/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
+              client.println("<p><a href=\"/D3/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
             }
             client.println("</body></html>");
 
