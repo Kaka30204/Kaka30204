@@ -123,14 +123,14 @@ digitalWrite(MotorPin3, LOW);
             } 
                
             // แสดงสถานะและปุ่มของ GPIO 3  
-            client.println("<p>Door Status : " + output3State + "</p>");
+            //client.println("<p>Door Status : " + output3State + "</p>");
             
-            if (output3State=="Unlocked") {
-              client.println("<p><a href=\"/D3/locked\"><button class=\"button\">LOCKED</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/D3/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
-            }
-            client.println("</body></html>");
+            //if (output3State=="Unlocked") {
+              //client.println("<p><a href=\"/D3/locked\"><button class=\"button\">LOCKED</button></a></p>");
+            //} else {
+              //client.println("<p><a href=\"/D3/Unlocked\"><button class=\"button button2\">UNLOCKED</button></a></p>");
+            //}
+            //client.println("</body></html>");
 
      // ส่วนตอนปิดการทำงาน
             client.println();
