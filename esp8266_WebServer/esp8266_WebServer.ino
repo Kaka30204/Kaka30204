@@ -82,21 +82,25 @@ Serial.println("GPIO 2 locked");
 output2State = "locked";
 digitalWrite(MotorPin2, LOW);
 digitalWrite(MotorPin3, HIGH);
+delay(5000)
 } else if (header.indexOf("GET /D2/Unlocked") >= 0) {
 Serial.println("GPIO 2 Unlocked");
 output2State = "Unlocked";
 digitalWrite(MotorPin2, HIGH);
 digitalWrite(MotorPin3, LOW);
+delay(5000)
 } else if (header.indexOf("GET /D3/locked") >= 0) {
 Serial.println("GPIO 3 locked");
 output3State = "locked";
 digitalWrite(MotorPin2, HIGH);
 digitalWrite(MotorPin3, LOW);
+delay(5000)
 } else if (header.indexOf("GET /D3/Unlocked") >= 0) {
 Serial.println("GPIO 3 Unlocked");
 output3State = "Unlocked";
 digitalWrite(MotorPin2, HIGH);
 digitalWrite(MotorPin3, LOW);
+delay(5000)..................
 }
 
 // ส่วนโค้ดแสดงหน้าเว็บที่ส่งไปให้ Client แสดง
