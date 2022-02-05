@@ -13,6 +13,10 @@ String output3State = "Unlocked";
 const int MotorPin2 = D2;
 const int MotorPin3 = D3;
 
+unsigned long previousMillis = 0;
+
+const long interval = 1000;
+
 void setup() {
 
 Serial.begin(115200);
@@ -67,13 +71,17 @@ Serial.println("GPIO 2 locked");
 output2State = "locked";
 digitalWrite(MotorPin2, LOW);
 digitalWrite(MotorPin3, HIGH);
-delay(5000);
+delay(6000);
+digitalWrite(MotorPin2, LOW);
+digitalWrite(MotorPin3, LOW);
 } else if (header.indexOf("GET /D2/Unlocked") >= 0) {
 Serial.println("GPIO 2 Unlocked");
 output2State = "Unlocked";
 digitalWrite(MotorPin2, HIGH);
 digitalWrite(MotorPin3, LOW);
-delay(5000);
+delay(6000);
+digitalWrite(MotorPin2, LOW);
+digitalWrite(MotorPin3, LOW);
 }
 
             client.println("<!DOCTYPE html><html>");
