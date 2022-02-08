@@ -71,7 +71,7 @@ Serial.println("GPIO 2 locked");
 output2State = "locked";
 digitalWrite(MotorPin2, LOW);
 digitalWrite(MotorPin3, HIGH);
-delay(6000);
+delay(7000);
 digitalWrite(MotorPin2, LOW);
 digitalWrite(MotorPin3, LOW);
 } else if (header.indexOf("GET /D2/Unlocked") >= 0) {
@@ -79,7 +79,7 @@ Serial.println("GPIO 2 Unlocked");
 output2State = "Unlocked";
 digitalWrite(MotorPin2, HIGH);
 digitalWrite(MotorPin3, LOW);
-delay(6000);
+delay(7000);
 digitalWrite(MotorPin2, LOW);
 digitalWrite(MotorPin3, LOW);
 }
